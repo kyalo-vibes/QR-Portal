@@ -775,9 +775,9 @@ const TemplateWizard = () => {
                                         )}
                                         <div className="mt-2 flex flex-wrap gap-1">
                                   <span
-                                      className={`px-2 py-0.5 rounded-full text-xs ${tag.isStatic === "1" ? "bg-blue-100 text-blue-800" : tag.isDynamic === "1" ? "bg-orange-100 text-orange-800" : "bg-gray-100 text-gray-800"}`}
+                                      className={`px-2 py-0.5 rounded-full text-xs ${(tag.isStatic === "1" && tag.isDynamic === "1") ? "bg-blue-300 text-blue-800" : tag.isStatic === "1" ? "bg-blue-100 text-blue-800" : tag.isDynamic === "1" ? "bg-orange-100 text-orange-800" : "bg-gray-100 text-gray-800"}`}
                                   >
-                                    {tag.isStatic === "1" ? "Static" : tag.isDynamic === "1" ? "Dynamic" : "Undefined"}
+                                    {(tag.isStatic === "1" && tag.isDynamic === "1") ? "Static & Dynamic" : tag.isStatic === "1" ? "Static" : tag.isDynamic === "1" ? "Dynamic" : "Undefined"}
                                   </span>
                                           <span
                                               className={`px-2 py-0.5 rounded-full text-xs ${tag.required === "1" ? "bg-red-100 text-red-800" : "bg-green-100 text-green-800"}`}
@@ -984,8 +984,8 @@ const TemplateWizard = () => {
                             setNewTag({
                               ...newTag,
                               isStatic: checked ? "1" : "0",
-                              isDynamic: checked ? "0" : newTag.isDynamic,
                             })
+
                         }
                     />
                     <Label htmlFor="is-static">Static</Label>
@@ -998,8 +998,7 @@ const TemplateWizard = () => {
                             setNewTag({
                               ...newTag,
                               isDynamic: checked ? "1" : "0",
-                              isStatic: checked ? "0" : newTag.isStatic,
-                            })
+                            }) 
                         }
                     />
                     <Label htmlFor="is-dynamic">Dynamic</Label>
