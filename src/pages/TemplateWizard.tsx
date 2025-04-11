@@ -19,6 +19,7 @@ import { getAllJourneyTypes } from "@/services/configService"
 import type { JourneyType } from "@/types/config"
 import type { Template, TemplateTag, SubTemplateTag } from "@/types/template"
 import { getAllTemplates, getTemplateById } from "@/services/templateService"
+import QrTlvViewer from "@/components/qr/QrTlvViewer"
 
 const TemplateWizard = () => {
   const { toast } = useToast()
@@ -50,6 +51,10 @@ const TemplateWizard = () => {
   const [newSubtag, setNewSubtag] = useState<Partial<SubTemplateTag>>({})
   const [selectedParentTagId, setSelectedParentTagId] = useState<number | null>(null)
   const [selectedParentSubtagId, setSelectedParentSubtagId] = useState<number | null>(null)
+
+  // TLV Viewer
+  const [showTlv, setShowTlv] = useState(false);
+  const [tlvData, setTlvData] = useState<string | null>(null);
 
   // Load journeys and templates on mount
   useEffect(() => {
@@ -134,7 +139,7 @@ const TemplateWizard = () => {
 
   const handleNextStep = () => {
     // Validate current step
-    if (currentStep === 1) {
+        if (currentStep === 1) {
       if (isNewJourney && (!newJourneyId || !newJourneyName)) {
         toast({
           title: "Missing Information",
@@ -699,6 +704,35 @@ const TemplateWizard = () => {
 
                   <Separator className="my-4" />
 
+                  {/* Show/Hide TLV Button */}
+                  <div className="flex justify-between items-center">
+                  <h3 className="text-lg font-semibold text-brand-primary flex items-center">
+                      <Tag className="mr-2 h-5 w-5" />
+                      TLV Viewer
+                    </h3>
+                  <div>
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        className="text-brand-primary border-brand-primary/30 hover:bg-brand-primary/10"
+                        onClick={() => setShowTlv(!showTlv)}
+                    >
+                        {showTlv ? "Hide TLV" : "Show TLV"}
+                    </Button>
+                    </div>
+                  </div>
+                  {/* TLV Viewer Content */}
+                  {showTlv && (
+                    <div className="mt-4">
+                         {/* Placeholder for QR string generation - this needs to be implemented */}
+                            <QrTlvViewer qrString="0102030405" />
+                           
+                          </div>
+                  
+                  )}
+
+                  <Separator className="my-4" />
+
                   <div className="flex justify-between items-center">
                     <h3 className="text-lg font-semibold text-brand-primary flex items-center">
                       <Tag className="mr-2 h-5 w-5" />
@@ -709,7 +743,7 @@ const TemplateWizard = () => {
                       Add Tag
                     </Button>
                   </div>
-
+                  
                   <div className="space-y-4 mt-4">
                     {tags.length === 0 ? (
                         <div className="text-center py-8 border border-dashed rounded-md">
